@@ -19,9 +19,8 @@ if (isset($_GET['code'])) {
     $shortCode = $_GET['code'];
 
     // Prepare and execute the query to find the download link
-    $stmt = $conn->prepare("SELECT download_link FROM downloads WHERE short_url = ?");
-    $shortUrl = "https://terabox.bijoyknath.site/s/" . $shortCode; // Adjust this URL accordingly
-    $stmt->bind_param("s", $shortUrl);
+    $stmt = $conn->prepare("SELECT download_link FROM downloads WHERE short_id = ?");
+    $stmt->bind_param("s", $shortCode);
     $stmt->execute();
     $stmt->bind_result($downloadLink);
     
