@@ -65,7 +65,7 @@ function getDownloadLink($fileId, $conn) {
 
     // Prepare and execute the query to insert into the database
     $stmt = $conn->prepare("INSERT INTO downloads (filename, download_link, short_url, short_id) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sss", $infoData['list'][0]['filename'], $downloadData['downloadLink'], $shortUrl, $shortCode);
+    $stmt->bind_param("ssss", $infoData['list'][0]['filename'], $downloadData['downloadLink'], $shortUrl, $shortCode);
     if (!$stmt->execute()) {
         return ['error' => 'Failed to store download link.'];
     }
