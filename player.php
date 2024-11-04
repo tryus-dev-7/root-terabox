@@ -53,22 +53,34 @@ $mysqli->close();
             margin: 0;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
+            overflow: hidden;
         }
 
         .video-container {
+            position: relative;
             width: 100%;
             max-width: 100%;
             max-height: 100vh;
+            overflow: hidden;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
         }
 
         video {
             width: 100%;
             height: auto;
-            max-height: 100vh;
-            object-fit: cover;
+        }
+
+        /* Fullscreen and scaling adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .video-container {
+                border-radius: 0;
+            }
+
+            video {
+                height: 100vh;
+                object-fit: cover;
+            }
         }
     </style>
 </head>
