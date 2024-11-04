@@ -72,8 +72,8 @@ function fetchDownloadLinks($url)
 // Extract video ID from URL
 function extractVideoId($url)
 {
-    // Adjusted regex to capture all alphanumeric characters after '/s/'
-    if (preg_match('/\/s\/([a-zA-Z0-9]+)/', $url, $matches)) {
+    // Regex to capture everything after '/s/1' up to the end of the ID
+    if (preg_match('/\/s\/1([a-zA-Z0-9_]+)/', $url, $matches)) {
         return $matches[1];
     }
     return null;
@@ -140,9 +140,23 @@ if (isset($update['message'])) {
             ];
 
             sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
-            deleteMessage($genMessage['result']['message_id'], $genMessage['result']['chat']['id']);
+            // Check if the message was sent successfully
+            if (isset($genMessage['result'])) {
+                $messageId = $genMessage['result']['message_id'];
+                $returnedChatId = $genMessage['result']['chat']['id'];
+
+                // Delete the message
+                deleteMessage($returnedChatId, $messageId);
+            }
         } else {
-            deleteMessage($genMessage['result']['message_id'], $genMessage['result']['chat']['id']);
+            // Check if the message was sent successfully
+            if (isset($genMessage['result'])) {
+                $messageId = $genMessage['result']['message_id'];
+                $returnedChatId = $genMessage['result']['chat']['id'];
+
+                // Delete the message
+                deleteMessage($returnedChatId, $messageId);
+            }
             sendMessage($chatId, "*⚠️ Invalid URL*\n\n_Please check the URL and try again._", null, "Markdown");
         }
     }
