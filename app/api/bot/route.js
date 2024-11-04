@@ -3,8 +3,8 @@ import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 
-const TELEGRAM_BOT_TOKEN = "7638807691:AAEZbT6fD_cmUBIYcbLtAOcWJfqkOEpTE4I";
-const ADMIN_CHAT_ID = "1237570780";
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
 const API_ENDPOINT = "https://ytshorts.savetube.me/api/v1/terabox-downloader";
 
 // Define the user data file path
