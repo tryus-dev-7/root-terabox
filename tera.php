@@ -3,7 +3,7 @@
 // Database connection settings
 $servername = "localhost"; // Change as needed
 $username = "bijoyknat_androkali"; // Change to your DB username
-$password = "@godboy2213bkna"; // Change to your DB password
+$password = "=ot5(j$4glD8"; // Change to your DB password
 $dbname = "bijoyknat_terabox"; // Change to your DB name
 
 // Create a connection
