@@ -19,7 +19,7 @@ $shortId = isset($_GET['id']) ? $_GET['id'] : null;
 $downloadLink = '';
 if ($shortId) {
     // Prepare and execute the SQL statement to retrieve the download link
-    $stmt = $mysqli->prepare("SELECT download_link FROM videos WHERE short_id = ?");
+    $stmt = $mysqli->prepare("SELECT download_link FROM downloads WHERE short_id = ?");
     $stmt->bind_param("s", $shortId); // "s" indicates that the parameter is a string
     $stmt->execute();
     $stmt->bind_result($downloadLink);
@@ -38,6 +38,7 @@ $mysqli->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,6 +54,7 @@ $mysqli->close();
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
         }
+
         .video-container {
             position: relative;
             max-width: 100%;
@@ -61,20 +63,22 @@ $mysqli->close();
         }
     </style>
 </head>
+
 <body>
 
-<div class="video-container" id="videoContainer">
-    <video id="videoPlayer" playsinline controls muted>
-        <source id="videoSource" src="<?php echo htmlspecialchars($downloadLink); ?>" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-</div>
+    <div class="video-container" id="videoContainer">
+        <video id="videoPlayer" playsinline controls muted>
+            <source id="videoSource" src="<?php echo htmlspecialchars($downloadLink); ?>" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 
-<!-- Plyr.js JavaScript -->
-<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-<script>
-    // Initialize Plyr
-    const player = new Plyr('#videoPlayer');
-</script>
+    <!-- Plyr.js JavaScript -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+    <script>
+        // Initialize Plyr
+        const player = new Plyr('#videoPlayer');
+    </script>
 </body>
+
 </html>
