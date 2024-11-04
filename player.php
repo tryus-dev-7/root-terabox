@@ -38,35 +38,30 @@ $mysqli->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terabox Video Player</title>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
+        /* This is purely for the demo */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .video-container {
-            position: relative;
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        .plyr {
+            border-radius: 4px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="video-container" id="videoContainer">
-        <video id="videoPlayer" playsinline autoplay muted controls>
+    <div class="container">
+        <video id="videoPlayer" playsinline controls autoplay muted>
             <source id="videoSource" src="<?php echo htmlspecialchars($downloadLink); ?>" type="video/mp4">
             Your browser does not support the video tag.
         </video>
