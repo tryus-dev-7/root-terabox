@@ -1,6 +1,20 @@
 <?php
 
-function getDownloadLink($fileId) {
+// Database connection settings
+$servername = "localhost"; // Change as needed
+$username = "bijoyknat_androkali"; // Change to your DB username
+$password = "@godboy2213bkna"; // Change to your DB password
+$dbname = "bijoyknat_terabox"; // Change to your DB name
+
+// Create a connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+function getDownloadLink($fileId, $conn) {
     // Step 1: Fetch the file information
     $infoUrl = "https://terabox.hnn.workers.dev/api/get-info?shorturl=$fileId";
     $infoResponse = file_get_contents($infoUrl);
@@ -45,17 +59,39 @@ function getDownloadLink($fileId) {
         return ['error' => 'Failed to retrieve download link.'];
     }
 
-    // Return only the filename and download link
+    // Get filename and download link
+    $filename = $infoData['list'][0]['filename'];
+    $downloadLink = $downloadData['downloadLink'];
+
+    // Step 3: Insert the download link into the database
+    $shortUrl = generateShortUrl($conn); // Generate short URL
+    $stmt = $conn->prepare("INSERT INTO downloads (filename, download_link, short_url) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $filename, $downloadLink, $shortUrl);
+
+    if (!$stmt->execute()) {
+        return ['error' => 'Failed to store download link.'];
+    }
+    $stmt->close();
+
+    // Return the filename, download link, and short URL
     return [
-        'title' => $infoData['list'][0]['filename'],
-        'link' => $downloadData['downloadLink']
+        'title' => $filename,
+        'download_link' => $downloadLink,
+        'short_url' => $shortUrl
     ];
+}
+
+// Function to generate a short URL (this is a simple implementation)
+function generateShortUrl($conn) {
+    // Generate a unique short code
+    $shortCode = substr(md5(uniqid(rand(), true)), 0, 6);
+    return "https://terabox.bijoyknath.site/s/" . $shortCode; // Replace with your domain
 }
 
 // Get the file ID from the URL
 if (isset($_GET['id'])) {
     $fileId = $_GET['id']; // Retrieve file ID from the query string
-    $result = getDownloadLink($fileId);
+    $result = getDownloadLink($fileId, $conn);
 
     // Set the content type to JSON
     header('Content-Type: application/json');
@@ -67,4 +103,7 @@ if (isset($_GET['id'])) {
     header('Content-Type: application/json');
     echo json_encode(['error' => 'No file ID provided.']);
 }
+
+// Close the database connection
+$conn->close();
 ?>

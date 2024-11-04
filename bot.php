@@ -101,7 +101,7 @@ if (isset($update['message'])) {
         if ($downloadLinks) {
             $title = addslashes($downloadLinks['title']);
             $videoLink = $downloadLinks['link'];
-            $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=\"$videoLink\"";
+            $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$videoLink";
 
             // Create keyboard for download options
             $keyboard = [
