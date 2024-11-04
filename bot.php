@@ -20,7 +20,7 @@ function saveUserData($userData)
 }
 
 // Send message to Telegram
-function sendMessage($chatId, $text, $parseMode = "Markdown")
+function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown")
 {
     global $TELEGRAM_BOT_TOKEN;
     $url = "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage";
@@ -29,6 +29,9 @@ function sendMessage($chatId, $text, $parseMode = "Markdown")
         'text' => $text,
         'parse_mode' => $parseMode
     ];
+    if ($keyboard) {
+        $data['reply_markup'] = json_encode($keyboard);
+    }
 
     // Send the request and get the response
     $response = file_get_contents($url . '?' . http_build_query($data));
