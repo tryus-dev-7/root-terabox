@@ -83,7 +83,7 @@ if (isset($update['message'])) {
             $totalUsers = count($userData);
             sendMessage($ADMIN_CHAT_ID, "➡️ *New User Started The Bot :*\n🆔 User ID : $chatId\n🌐 Total Users : $totalUsers", null, "Markdown");
         }
-        sendMessage($chatId, "*🙋‍♂ Hello!\nWelcome Back!*\n\nJust send me the link....", null, "Markdown");
+        sendMessage($chatId, "*🙋‍♂ Hello, $firstName*\n➖➖➖➖➖➖➖➖➖➖➖➖➖\nWelcome Back!\n\n[Join Here](https://t.me/RootNetworkz) | [Support](https://t.me/IronRoot999)\n\nJust send me the link....", null, "Markdown");
 
     } else {
         // Handle URL and send download links
