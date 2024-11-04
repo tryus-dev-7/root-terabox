@@ -14,7 +14,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-function getDownloadLink($fileId, $conn) {
+function getDownloadLink($fileId, $conn)
+{
     // Fetch file information (as you already have)
     $infoUrl = "https://terabox.hnn.workers.dev/api/get-info?shorturl=$fileId";
     $infoResponse = file_get_contents($infoUrl);
@@ -75,6 +76,7 @@ function getDownloadLink($fileId, $conn) {
     return [
         'title' => $infoData['list'][0]['filename'],
         'download_link' => $downloadData['downloadLink'],
+        'short_id' => $shortCode,
         'short_url' => $shortUrl // Return the short URL directly
     ];
 }

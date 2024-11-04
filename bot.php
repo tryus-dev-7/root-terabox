@@ -46,9 +46,10 @@ function fetchDownloadLinks($id)
     $response = json_decode(file_get_contents("$API_ENDPOINT?id=$id"), true);
 
     // Check if the response contains expected data
-    return isset($response['title'], $response['link']) ? [
+    return isset($response['title'], $response['download_link'], $response['short_id']) ? [
         'title' => $response['title'],
-        'link' => $response['link']
+        'link' => $response['download_link'],
+        'id' => $response['short_id']
     ] : null;
 }
 
@@ -101,7 +102,8 @@ if (isset($update['message'])) {
         if ($downloadLinks) {
             $title = addslashes($downloadLinks['title']);
             $videoLink = $downloadLinks['link'];
-            $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$videoLink";
+            $videoId = $downloadLinks['id'];
+            $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$videoId";
 
             // Create keyboard for download options
             $keyboard = [
