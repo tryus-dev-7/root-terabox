@@ -13,13 +13,15 @@ if (file_exists($USER_DATA_FILE)) {
 }
 
 // Save user data
-function saveUserData($userData) {
+function saveUserData($userData)
+{
     global $USER_DATA_FILE;
     file_put_contents($USER_DATA_FILE, json_encode($userData));
 }
 
 // Send message to Telegram
-function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown") {
+function sendMessage($chatId, $text, $parseMode = "Markdown")
+{
     global $TELEGRAM_BOT_TOKEN;
     $url = "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage";
     $data = [
@@ -27,14 +29,20 @@ function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown") 
         'text' => $text,
         'parse_mode' => $parseMode
     ];
-    if ($keyboard) {
-        $data['reply_markup'] = json_encode($keyboard);
-    }
-    file_get_contents($url . '?' . http_build_query($data));
+
+    // Send the request and get the response
+    $response = file_get_contents($url . '?' . http_build_query($data));
+
+    // Decode the JSON response
+    $responseData = json_decode($response, true);
+
+    // Return the full response data
+    return $responseData;
 }
 
 // Delete message
-function deleteMessage($chatId, $messageId) {
+function deleteMessage($chatId, $messageId)
+{
     global $TELEGRAM_BOT_TOKEN;
     $url = "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/deleteMessage";
     $data = ['chat_id' => $chatId, 'message_id' => $messageId];
@@ -42,7 +50,8 @@ function deleteMessage($chatId, $messageId) {
 }
 
 // Fetch download links from API
-function fetchDownloadLinks($url) {
+function fetchDownloadLinks($url)
+{
     global $API_ENDPOINT;
     $payload = json_encode(['url' => $url]);
     $options = [
@@ -58,11 +67,25 @@ function fetchDownloadLinks($url) {
 }
 
 // Extract video ID from URL
-function extractVideoId($url) {
-    if (preg_match('/\/s\/1?([a-zA-Z0-9]+)/', $url, $matches)) {
+function extractVideoId($url)
+{
+    // Adjusted regex to capture all alphanumeric characters after '/s/'
+    if (preg_match('/\/s\/([a-zA-Z0-9]+)/', $url, $matches)) {
         return $matches[1];
     }
     return null;
+}
+
+// Function to show the "typing" indicator
+function sendChatAction($chatId, $action = "typing")
+{
+    global $TELEGRAM_BOT_TOKEN;
+    $url = "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendChatAction";
+    $data = [
+        'chat_id' => $chatId,
+        'action' => $action
+    ];
+    file_get_contents($url . '?' . http_build_query($data));
 }
 
 // Handle updates from Telegram
@@ -86,8 +109,15 @@ if (isset($update['message'])) {
         sendMessage($chatId, "*🙋‍♂ Hello, $firstName*\n➖➖➖➖➖➖➖➖➖➖➖➖➖\nWelcome Back!\n\n[Join Here](https://t.me/RootNetworkz) | [Support](https://t.me/IronRoot999)\n\nJust send me the link....", null, "Markdown");
 
     } else {
+
+        // Use the function to show typing status
+        sendChatAction($chatId, "typing");
+
+        // Simulate a delay of 1 second
+        sleep(1); // Adjust the delay time if needed
+
         // Handle URL and send download links
-        sendMessage($chatId, "*⚡ Generating video...*", null, "Markdown");
+        $genMessage = sendMessage($chatId, "*⚡ Generating video...*", null, "Markdown");
 
         $downloadLinks = fetchDownloadLinks($text);
         if ($downloadLinks) {
@@ -107,7 +137,9 @@ if (isset($update['message'])) {
             ];
 
             sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
+            deleteMessage($genMessage['result']['message_id'], $genMessage['result']['chat']['id']);
         } else {
+            deleteMessage($genMessage['result']['message_id'], $genMessage['result']['chat']['id']);
             sendMessage($chatId, "*⚠️ Invalid URL*\n\n_Please check the URL and try again._", null, "Markdown");
         }
     }
