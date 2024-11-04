@@ -5,7 +5,7 @@ import path from 'path';
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
-const API_ENDPOINT = "https://ytshorts.savetube.me/api/v1/terabox-downloader";
+const API_ENDPOINT = process.env.API_ENDPOINT;
 
 // Define the user data file path
 const USER_DATA_FILE = path.join(process.cwd(), 'user_data.json');
