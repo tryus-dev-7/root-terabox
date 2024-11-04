@@ -56,10 +56,19 @@ $mysqli->close();
         }
 
         .video-container {
-            position: relative;
+            width: 100%;
             max-width: 100%;
+            max-height: 100vh;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            max-height: 100vh;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -67,7 +76,7 @@ $mysqli->close();
 <body>
 
     <div class="video-container" id="videoContainer">
-        <video id="videoPlayer" playsinline controls muted>
+        <video id="videoPlayer" playsinline autoplay muted controls>
             <source id="videoSource" src="<?php echo htmlspecialchars($downloadLink); ?>" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -75,10 +84,6 @@ $mysqli->close();
 
     <!-- Plyr.js JavaScript -->
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-    <script>
-        // Initialize Plyr
-        const player = new Plyr('#videoPlayer');
-    </script>
 </body>
 
 </html>
