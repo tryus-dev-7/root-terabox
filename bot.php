@@ -1,12 +1,16 @@
 <?php
 
 $TELEGRAM_BOT_TOKEN = '7638807691:AAEZbT6fD_cmUBIYcbLtAOcWJfqkOEpTE4I';
-$API_ENDPOINT = "http://terabox.bijoyknath.site/tera.php";
+$API_ENDPOINT = "https://ytshorts.savetube.me/api/v1/terabox-downloader";
 $ADMIN_CHAT_ID = '1237570780';
-$USER_DATA_FILE = 'user_data.json';
 
-// Load or initialize user data
-$userData = file_exists($USER_DATA_FILE) ? json_decode(file_get_contents($USER_DATA_FILE), true) : [];
+// Load user data from file or initialize if not exists
+$USER_DATA_FILE = 'user_data.json';
+if (file_exists($USER_DATA_FILE)) {
+    $userData = json_decode(file_get_contents($USER_DATA_FILE), true);
+} else {
+    $userData = array();
+}
 
 // Save user data
 function saveUserData($userData)
@@ -15,7 +19,7 @@ function saveUserData($userData)
     file_put_contents($USER_DATA_FILE, json_encode($userData));
 }
 
-// Send a message to a Telegram chat
+// Send message to Telegram
 function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown")
 {
     global $TELEGRAM_BOT_TOKEN;
@@ -39,43 +43,52 @@ function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown")
     return $responseData;
 }
 
-// Delete a message by chat ID and message ID
+// Delete message
 function deleteMessage($chatId, $messageId)
 {
     global $TELEGRAM_BOT_TOKEN;
     $url = "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/deleteMessage";
-    file_get_contents($url . '?' . http_build_query(['chat_id' => $chatId, 'message_id' => $messageId]));
+    $data = ['chat_id' => $chatId, 'message_id' => $messageId];
+    file_get_contents($url . '?' . http_build_query($data));
 }
 
-// Fetch download links from the API
-function fetchDownloadLinks($id)
+// Fetch download links from API
+function fetchDownloadLinks($url)
 {
     global $API_ENDPOINT;
-    $response = json_decode(file_get_contents("$API_ENDPOINT?id=$id"), true);
-
-    // Check if the response contains expected data
-    return isset($response['title'], $response['download_link'], $response['short_id']) ? [
-        'title' => $response['title'],
-        'link' => $response['download_link'],
-        'id' => $response['short_id']
-    ] : null;
+    $payload = json_encode(['url' => $url]);
+    $options = [
+        'http' => [
+            'method' => 'POST',
+            'header' => "Content-Type: application/json\r\n",
+            'content' => $payload
+        ]
+    ];
+    $context = stream_context_create($options);
+    $result = file_get_contents($API_ENDPOINT, false, $context);
+    return json_decode($result, true)['response'][0] ?? null;
 }
 
-// Extract video ID from the given URL
+// Extract video ID from URL
 function extractVideoId($url)
 {
-    if (preg_match('/\/s\/(.+)/', $url, $matches)) {
+    // Regex to capture everything after '/s/1' up to the end of the ID
+    if (preg_match('/\/s\/1([a-zA-Z0-9_]+)/', $url, $matches)) {
         return $matches[1];
     }
     return null;
 }
 
-// Show typing action in the chat
+// Function to show the "typing" indicator
 function sendChatAction($chatId, $action = "typing")
 {
     global $TELEGRAM_BOT_TOKEN;
     $url = "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendChatAction";
-    file_get_contents($url . '?' . http_build_query(['chat_id' => $chatId, 'action' => $action]));
+    $data = [
+        'chat_id' => $chatId,
+        'action' => $action
+    ];
+    file_get_contents($url . '?' . http_build_query($data));
 }
 
 // Handle updates from Telegram
@@ -92,43 +105,60 @@ if (isset($update['message'])) {
         if (!in_array($chatId, $userData)) {
             $userData[] = $chatId;
             saveUserData($userData);
+
             $totalUsers = count($userData);
             sendMessage($ADMIN_CHAT_ID, "➡️ *New User Started The Bot :*\n🆔 User ID : $chatId\n🌐 Total Users : $totalUsers", null, "Markdown");
         }
-        $firstName = $message['from']['first_name'] ?? 'there';
-        sendMessage($chatId, "*🙋‍♂ Hello, $firstName!*\n➖➖➖➖➖➖➖➖➖➖➖➖➖\nWelcome Back!\n\n[Join Here](https://t.me/RootNetworkz) | [Support](https://t.me/IronRoot999)\n\nJust send me the link....", null, "Markdown");
+        sendMessage($chatId, "*🙋‍♂ Hello, $firstName*\n➖➖➖➖➖➖➖➖➖➖➖➖➖\nWelcome Back!\n\n[Join Here](https://t.me/RootNetworkz) | [Support](https://t.me/IronRoot999)\n\nJust send me the link....", null, "Markdown");
+
     } else {
-        // Show typing status
+
+        // Use the function to show typing status
         sendChatAction($chatId, "typing");
-        sleep(1); // Simulate a delay for better user experience
+
+        // Simulate a delay of 1 second
+        sleep(1); // Adjust the delay time if needed
 
         // Handle URL and send download links
         $genMessage = sendMessage($chatId, "*⚡ Generating video...*", null, "Markdown");
-        $videoId = extractVideoId($text);
 
-        $downloadLinks = fetchDownloadLinks($videoId);
-
+        $downloadLinks = fetchDownloadLinks($text);
         if ($downloadLinks) {
             $title = addslashes($downloadLinks['title']);
-            $videoLink = $downloadLinks['link'];
-            $shortId = $downloadLinks['id'];
-            $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId";
+            $hdVideoLink = $downloadLinks['resolutions']['HD Video'] ?? null;
+            $fastDownloadLink = $downloadLinks['resolutions']['Fast Download'] ?? null;
+            $videoId = extractVideoId($text);
+            $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$videoId";
 
-            // Create keyboard for download options
+            // Create keyboard
             $keyboard = [
                 'inline_keyboard' => [
-                    [['text' => '⬇️ Download Video (🚀)', 'url' => $videoLink]],
+                    [['text' => '⬇️ Download Video', 'url' => $hdVideoLink]],
+                    [['text' => '🚀 Download Video (Fast)', 'url' => $fastDownloadLink]],
                     [['text' => '▶️ Watch Video', 'url' => $watchVideoLink]]
                 ]
             ];
 
-            sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", "Markdown");
-        } else {
-            // Delete generating message if it was sent
+            sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
+            // Check if the message was sent successfully
             if (isset($genMessage['result'])) {
-                deleteMessage($chatId, $genMessage['result']['message_id']);
+                $messageId = $genMessage['result']['message_id'];
+                $returnedChatId = $genMessage['result']['chat']['id'];
+
+                // Delete the message
+                deleteMessage($returnedChatId, $messageId);
+            }
+        } else {
+            // Check if the message was sent successfully
+            if (isset($genMessage['result'])) {
+                $messageId = $genMessage['result']['message_id'];
+                $returnedChatId = $genMessage['result']['chat']['id'];
+
+                // Delete the message
+                deleteMessage($returnedChatId, $messageId);
             }
             sendMessage($chatId, "*⚠️ Invalid URL*\n\n_Please check the URL and try again._", null, "Markdown");
         }
     }
 }
+?>
