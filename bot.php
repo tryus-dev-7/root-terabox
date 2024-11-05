@@ -141,7 +141,7 @@ if (isset($update['message'])) {
 
 
 
-                sendMessage($chatId, "* Title :* ", null, "Markdown");
+                sendMessage($chatId, "*➡️ Title :* $title", null, "Markdown");
             } else {
                 // Delete generating message if it was sent
                 if (isset($genMessage['result'])) {
