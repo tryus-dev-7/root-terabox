@@ -126,10 +126,15 @@ if (isset($update['message'])) {
 
 
             if ($downloadLinks) {
+
+                sendMessage($chatId, "*⚡ Generating video...3*", null, "Markdown");
+
                 $title = addslashes($downloadLinks['title']);
                 $videoLink = $downloadLinks['link'];
                 $shortId = $downloadLinks['id'];
                 $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId";
+
+                sendMessage($chatId, "*⚡ Generating video...4*", null, "Markdown");
 
 
 
