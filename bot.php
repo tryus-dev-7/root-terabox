@@ -122,7 +122,7 @@ if (isset($update['message'])) {
                 ]
             ];
 
-            sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
+            sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", "Markdown");
         } else {
             // Delete generating message if it was sent
             if (isset($genMessage['result'])) {
