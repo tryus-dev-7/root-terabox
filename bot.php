@@ -126,7 +126,7 @@ if (isset($update['message'])) {
             $downloadLinks = fetchDownloadLinks($videoId);
 
             if ($downloadLinks) {
-                $title = sanitizeForMarkdownV2($downloadLinks['title']);
+                $title = addslashes($downloadLinks['title']);
                 $videoLink = $downloadLinks['link'];
                 $shortId = $downloadLinks['id'];
                 $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId";
@@ -141,7 +141,7 @@ if (isset($update['message'])) {
                 ];
 
 
-                sendMessage($chatId, "*➡️ Title :* Person-of-Interest-s5-e13_360p.mp4\n\n_Choose an option below:_", $keyboard, "Markdown");
+                sendMessage($chatId, "*➡️ Title :* $title\n\nChoose an option below:", $keyboard, "Markdown");
             } else {
                 // Delete generating message if it was sent
                 if (isset($genMessage['result'])) {
