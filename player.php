@@ -47,7 +47,7 @@ $mysqli->close();
 </head>
 
 <body style="margin:0px;">
-    <video poster="<?php echo $posterImg; ?>" id="player" playsinline controls>
+    <video poster="<?php echo $posterImg; ?>" id="player" playsinline controls muted autoplay>
         <source src="<?php echo htmlspecialchars($downloadLink); ?>" type="video/mp4">
     </video>
     <!-- Plyr JS -->

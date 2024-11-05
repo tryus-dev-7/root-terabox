@@ -129,7 +129,7 @@ if (isset($update['message'])) {
                 $title = sanitizeForMarkdown($downloadLinks['title']);
                 $videoLink = $downloadLinks['link'];
                 $shortId = $downloadLinks['id'];
-                $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId";
+                $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId&mode=compact";
 
 
                 // Create keyboard for download options
