@@ -20,7 +20,7 @@ function sanitizeForMarkdown($text)
 {
     // Escape all the special characters for MarkdownV2
     $text = str_replace(
-        ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '!'],
+        ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '=', '|', '{', '}', '!'],
         ' ',
         $text
     );
