@@ -101,10 +101,8 @@ if (isset($update['message'])) {
         $downloadLinks = fetchDownloadLinks($videoId);
 
         if ($downloadLinks) {
-
-            sendMessage($chatId, "ID : $videoId", $keyboard, "Markdown");
-
             $title = addslashes($downloadLinks['title']);
+            sendMessage($chatId, "ID : $videoId", $keyboard, "Markdown");
             $videoLink = $downloadLinks['link'];
             $videoId = $downloadLinks['id'];
             $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$videoId";
