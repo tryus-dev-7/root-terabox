@@ -98,8 +98,10 @@ if (isset($update['message'])) {
         $genMessage = sendMessage($chatId, "*⚡ Generating video...*", null, "Markdown");
         $videoId = extractVideoId($text);
 
-        sendMessage($chatId, "ID : $videoId", $keyboard, "Markdown");
         $downloadLinks = fetchDownloadLinks($videoId);
+
+        sendMessage($chatId, "ID : $downloadLinks", $keyboard, "Markdown");
+
 
         if ($downloadLinks) {
             $title = addslashes($downloadLinks['title']);
