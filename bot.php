@@ -90,7 +90,7 @@ if (isset($update['message'])) {
 
     if ($maintenance_mode) {
         // If maintenance mode is on, send a maintenance message
-        sendMessage($chatId, "*🚧 The bot is currently undergoing maintenance.*\n\n_Please check back later. 🚧_", null, "Markdown");
+        sendMessage($chatId, "*🚧 Maintenance Mode 🚧*\n\n_➤ Please check back later...._", null, "Markdown");
     } else {
         if ($text === '/start') {
             // Handle start command
