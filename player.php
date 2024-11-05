@@ -43,19 +43,16 @@ $mysqli->close();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Plyr.io Player -->
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.3.12/plyr.css">
 </head>
 
 <body style="margin:0px;">
-    <video poster="" id="player" playsinline controls autoplay muted>
+    <video poster="<?php echo $posterImg; ?>" id="player" playsinline controls>
         <source src="<?php echo htmlspecialchars($downloadLink); ?>" type="video/mp4">
     </video>
     <!-- Plyr JS -->
-    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-    <script>
-        alert(<?php echo htmlspecialchars($downloadLink); ?>);
-        const player = new Plyr('#player');
-    </script>
+    <script src="https://cdn.plyr.io/3.3.12/plyr.js"></script>
+    <script>const player = new Plyr('#player');</script>
 </body>
 
 </html>
