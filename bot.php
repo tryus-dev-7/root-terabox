@@ -106,9 +106,6 @@ if (isset($update['message'])) {
             $shortId = $downloadLinks['id'];
             $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId";
 
-            sendMessage($chatId, "ID : $videoId", $keyboard, "Markdown");
-
-
             // Create keyboard for download options
             $keyboard = [
                 'inline_keyboard' => [
@@ -116,6 +113,9 @@ if (isset($update['message'])) {
                     [['text' => '▶️ Watch Video', 'url' => $watchVideoLink]]
                 ]
             ];
+
+            sendMessage($chatId, "ID : $videoId", $keyboard, parseMode: "Markdown");
+
 
             sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
         } else {
