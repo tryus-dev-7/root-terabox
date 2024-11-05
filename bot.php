@@ -93,7 +93,7 @@ if (isset($update['message'])) {
     if ($maintenance_mode) {
         // Handle start command
         $userData[] = $chatId;
-        saveUserData($userData);
+        //saveUserData($userData);
         $totalUsers = count($userData);
         sendMessage($ADMIN_CHAT_ID, "➡️ *New User Started The Bot :*\n🆔 User ID : $chatId\n👨🏻‍💻 Username : $userName\n🌐 Total Users : $totalUsers", null, "Markdown");
         // If maintenance mode is on, send a maintenance message
