@@ -16,7 +16,7 @@ function saveUserData($userData)
     file_put_contents($USER_DATA_FILE, json_encode($userData));
 }
 
-function sanitizeForMarkdownV2($text)
+function sanitizeForMarkdown($text)
 {
     // Escape all the special characters for MarkdownV2
     $text = str_replace(
@@ -126,7 +126,7 @@ if (isset($update['message'])) {
             $downloadLinks = fetchDownloadLinks($videoId);
 
             if ($downloadLinks) {
-                $title = addslashes($downloadLinks['title']);
+                $title = sanitizeForMarkdown($downloadLinks['title']);
                 $videoLink = $downloadLinks['link'];
                 $shortId = $downloadLinks['id'];
                 $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId";
@@ -141,7 +141,7 @@ if (isset($update['message'])) {
                 ];
 
 
-                sendMessage($chatId, "*➡️ Title :* $title\n\nChoose an option below:", $keyboard, "Markdown");
+                sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
             } else {
                 // Delete generating message if it was sent
                 if (isset($genMessage['result'])) {
