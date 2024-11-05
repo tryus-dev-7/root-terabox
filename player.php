@@ -43,7 +43,7 @@ $mysqli->close();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Plyr.io Player -->
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.3.12/plyr.css">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         /* Add top margin to the video container */
         .video-container {
@@ -63,7 +63,7 @@ $mysqli->close();
         </video>
     </div>
     <!-- Plyr JS -->
-    <script src="https://cdn.plyr.io/3.3.12/plyr.js"></script>
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script>const player = new Plyr('#player');</script>
 </body>
 
