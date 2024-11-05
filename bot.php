@@ -23,12 +23,20 @@ function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown")
     $data = [
         'chat_id' => $chatId,
         'text' => $text,
-        'parse_mode' => $parseMode,
-        'reply_markup' => $keyboard ? json_encode($keyboard) : null
+        'parse_mode' => $parseMode
     ];
+    if ($keyboard) {
+        $data['reply_markup'] = json_encode($keyboard);
+    }
 
-    // Send request and return response data
-    return json_decode(file_get_contents($url . '?' . http_build_query($data)), true);
+    // Send the request and get the response
+    $response = file_get_contents($url . '?' . http_build_query($data));
+
+    // Decode the JSON response
+    $responseData = json_decode($response, true);
+
+    // Return the full response data
+    return $responseData;
 }
 
 // Delete a message by chat ID and message ID
@@ -114,10 +122,7 @@ if (isset($update['message'])) {
                 ]
             ];
 
-            // Convert the keyboard array to JSON
-            $encodedKeyboard = json_encode($keyboard);
-
-            sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $encodedKeyboard, "Markdown");
+            sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
         } else {
             // Delete generating message if it was sent
             if (isset($genMessage['result'])) {
