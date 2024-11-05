@@ -110,7 +110,7 @@ if (isset($update['message'])) {
                 $userData[] = $chatId;
                 saveUserData($userData);
                 $totalUsers = count($userData);
-                sendMessage($ADMIN_CHAT_ID, "➡️ *New User Started The Bot :*\n🆔 User ID : $chatId\n🌐 Total Users : $totalUsers", null, "Markdown");
+                sendMessage($ADMIN_CHAT_ID, "➡️ *New User Started The Bot :*\n🆔 User ID : $chatId\n👨🏻‍💻 Username : $username\n🌐 Total Users : $totalUsers", null, "Markdown");
             }
             $firstName = $message['chat']['first_name'] ?? 'there';
             sendMessage($chatId, "*🙋‍♂ Hello, $firstName!*\n➖➖➖➖➖➖➖➖➖➖➖➖➖\nWelcome Back!\n\n[Join Here](https://t.me/RootNetworkz) | [Support](https://t.me/IronRoot999)\n\nJust send me the link....", null, "Markdown");
