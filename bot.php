@@ -100,7 +100,7 @@ if (isset($update['message'])) {
 
         $downloadLinks = fetchDownloadLinks($videoId);
 
-        if (isset($downloadLinks['link'])) {
+        if (!empty($downloadLinks)) {
             $title = addslashes($downloadLinks['title']);
             $videoLink = $downloadLinks['link'];
             $videoId = $downloadLinks['id'];
