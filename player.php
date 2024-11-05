@@ -45,20 +45,10 @@ $mysqli->close();
     <!-- Plyr.io Player -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.3.12/plyr.css">
     <style>
-        /* Center the container */
-        body,
-        html {
-            margin: 0;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Style the video container */
+        /* Add top margin to the video container */
         .video-container {
-            width: 90%;
-            /* Adjust as needed */
+            margin-top: 30px;
+            /* 30px margin on top only */
             box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             overflow: hidden;
