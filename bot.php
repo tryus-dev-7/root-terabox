@@ -4,7 +4,7 @@ $TELEGRAM_BOT_TOKEN = '7638807691:AAEZbT6fD_cmUBIYcbLtAOcWJfqkOEpTE4I';
 $API_ENDPOINT = "http://terabox.bijoyknath.site/tera.php";
 $ADMIN_CHAT_ID = '1237570780';
 $USER_DATA_FILE = 'user_data.json';
-$maintenance_mode = true; // Set to true to enable maintenance mode, false to disable
+$maintenance_mode = false; // Set to true to enable maintenance mode, false to disable
 
 // Load or initialize user data
 $userData = file_exists($USER_DATA_FILE) ? json_decode(file_get_contents($USER_DATA_FILE), true) : [];
