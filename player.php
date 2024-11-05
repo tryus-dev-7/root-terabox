@@ -44,12 +44,34 @@ $mysqli->close();
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Plyr.io Player -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.3.12/plyr.css">
+    <style>
+        /* Center the container */
+        body,
+        html {
+            margin: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Style the video container */
+        .video-container {
+            width: 90%;
+            /* Adjust as needed */
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
-<body style="margin:0px;">
-    <video poster="<?php echo $posterImg; ?>" id="player" playsinline controls muted autoplay>
-        <source src="<?php echo htmlspecialchars($downloadLink); ?>" type="video/mp4">
-    </video>
+<body>
+    <div class="video-container">
+        <video poster="<?php echo $posterImg; ?>" id="player" playsinline controls muted autoplay>
+            <source src="<?php echo htmlspecialchars($downloadLink); ?>" type="video/mp4">
+        </video>
+    </div>
     <!-- Plyr JS -->
     <script src="https://cdn.plyr.io/3.3.12/plyr.js"></script>
     <script>const player = new Plyr('#player');</script>
