@@ -16,39 +16,20 @@ function saveUserData($userData)
     file_put_contents($USER_DATA_FILE, json_encode($userData));
 }
 
-// Send a message to a Telegram chat
+// Send a message to a Telegram chat// Send a message to a Telegram chat
 function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown")
 {
     global $TELEGRAM_BOT_TOKEN;
-    global $ADMIN_CHAT_ID;
-
     $url = "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage";
     $data = [
         'chat_id' => $chatId,
         'text' => $text,
-        'parse_mode' => $parseMode
+        'parse_mode' => $parseMode,
+        'reply_markup' => $keyboard ? json_encode($keyboard) : null
     ];
-    if ($keyboard) {
-        $data['reply_markup'] = json_encode($keyboard);
-    }
 
-    // Send the request and get the response
-    $response = file_get_contents($url . '?' . http_build_query($data));
-
-    // Decode the JSON response
-    $responseData = json_decode($response, true);
-
-    // Check if the response indicates an error
-    if (isset($responseData['ok']) && !$responseData['ok']) {
-        // Log the error message from Telegram
-        error_log("Telegram API Error: " . $responseData['description']);
-
-        // Optional: Send a message back to the admin chat or log the error
-        sendMessage($ADMIN_CHAT_ID, "Error occurred: " . $responseData['description']);
-    }
-
-    // Return the full response data
-    return $responseData;
+    // Send request and return response data
+    return json_decode(file_get_contents($url . '?' . http_build_query($data)), true);
 }
 
 // Delete a message by chat ID and message ID
