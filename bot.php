@@ -100,10 +100,7 @@ if (isset($update['message'])) {
 
         $downloadLinks = fetchDownloadLinks($videoId);
 
-        sendMessage($chatId, "ID : $downloadLinks", $keyboard, "Markdown");
-
-
-        if ($downloadLinks) {
+        if ($downloadLinks['link']) {
             $title = addslashes($downloadLinks['title']);
             $videoLink = $downloadLinks['link'];
             $videoId = $downloadLinks['id'];
