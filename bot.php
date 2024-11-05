@@ -16,14 +16,6 @@ function saveUserData($userData)
     file_put_contents($USER_DATA_FILE, json_encode($userData));
 }
 
-function sanitizeTitle($text)
-{
-    // Remove or replace unwanted characters
-    $text = str_replace(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'], '', $text);
-    return $text; // Return sanitized text
-}
-
-
 // Send a message to a Telegram chat// Send a message to a Telegram chat
 function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown")
 {
@@ -123,7 +115,7 @@ if (isset($update['message'])) {
             $downloadLinks = fetchDownloadLinks($videoId);
 
             if ($downloadLinks) {
-                $title = sanitizeTitle($downloadLinks['title']);
+                $title = addslashes($downloadLinks['title']);
                 $videoLink = $downloadLinks['link'];
                 $shortId = $downloadLinks['id'];
                 $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId";
@@ -138,7 +130,7 @@ if (isset($update['message'])) {
                 ];
 
 
-                sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
+                sendMessage($chatId, "**➡️ Title //:** $title\n\n_Choose an option below//:_", $keyboard, "MarkdownV2");
             } else {
                 // Delete generating message if it was sent
                 if (isset($genMessage['result'])) {
