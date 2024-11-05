@@ -134,6 +134,9 @@ if (isset($update['message'])) {
                 $shortId = $downloadLinks['id'];
                 $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId";
 
+                sendMessage($chatId, "*⚡ $title*", null, "Markdown");
+
+
                 sendMessage($chatId, "*⚡ Generating video...4*", null, "Markdown");
 
 
