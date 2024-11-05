@@ -122,6 +122,9 @@ if (isset($update['message'])) {
 
             $downloadLinks = fetchDownloadLinks($videoId);
 
+            sendMessage($chatId, "*⚡ Generating video...2*", null, "Markdown");
+
+
             if ($downloadLinks) {
                 $title = addslashes($downloadLinks['title']);
                 $videoLink = $downloadLinks['link'];
