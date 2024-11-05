@@ -114,18 +114,9 @@ if (isset($update['message'])) {
             $shortId = $downloadLinks['id'];
             $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId";
 
-            sendMessage($chatId, "*➡️ Title :* $watchVideoLink", $keyboard, "Markdown");
+        
 
-
-            // Create keyboard for download options
-            $keyboard = [
-                'inline_keyboard' => [
-                    [['text' => '⬇️ Download Video (🚀)', 'url' => $videoLink]],
-                    [['text' => '▶️ Watch Video', 'url' => $watchVideoLink]]
-                ]
-            ];
-
-            sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", "Markdown");
+            sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
         } else {
             // Delete generating message if it was sent
             if (isset($genMessage['result'])) {
