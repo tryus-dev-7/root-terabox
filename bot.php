@@ -56,7 +56,7 @@ function fetchDownloadLinks($id)
 // Extract video ID from the given URL
 function extractVideoId($url)
 {
-    if (preg_match('/\/s\/([a-zA-Z0-9\-]+)/', $url, $matches)) {
+    if (preg_match('/\/s\/(.+)/', $url, $matches)) {
         return $matches[1];
     }
     return null;
