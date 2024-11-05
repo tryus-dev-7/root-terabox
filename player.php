@@ -36,39 +36,23 @@ if ($shortId) {
 $mysqli->close();
 ?>
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terabox Video Player</title>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <style>
-        /* This is purely for the demo */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .plyr {
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Plyr.io Player -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.3.12/plyr.css">
 </head>
 
-<body>
-
-    <div class="container">
-        <video id="videoPlayer" playsinline controls autoplay muted>
-            <source id="videoSource" src="<?php echo htmlspecialchars($downloadLink); ?>" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
-    <!-- Plyr.js JavaScript -->
-    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+<body style="margin:0px;">
+    <video poster="<?php echo $posterImg; ?>" id="player" playsinline controls>
+        <source src="<?php echo htmlspecialchars($downloadLink); ?>" type="video/mp4">
+    </video>
+    <!-- Plyr JS -->
+    <script src="https://cdn.plyr.io/3.3.12/plyr.js"></script>
+    <script>const player = new Plyr('#player');</script>
 </body>
 
 </html>
