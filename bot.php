@@ -117,7 +117,7 @@ if (isset($update['message'])) {
         } else {
             // Show typing status
             sendChatAction($chatId, "typing");
-            sleep(1); // Simulate a delay for better user experience
+            sleep(seconds: 5); // Simulate a delay for better user experience
 
             // Handle URL and send download links
             $genMessage = sendMessage($chatId, "*⚡ Generating video...*", null, "Markdown");
