@@ -124,13 +124,13 @@ if (isset($update['message'])) {
                 // Create keyboard for download options
                 $keyboard = [
                     'inline_keyboard' => [
-                        [['text' => '⬇️ Download Video (🚀)', 'url' => $videoLink]],
+                        [['text' => '⬇️ Download Video', 'url' => $videoLink]],
                         [['text' => '▶️ Watch Video', 'url' => $watchVideoLink]]
                     ]
                 ];
 
 
-                sendMessage($chatId, "**➡️ Title //:** $title\n\n_Choose an option below//:_", $keyboard, "MarkdownV2");
+                sendMessage($chatId, "*➡️ Title :* Person-of-Interest-s5-e13_360p.mp4\n\n_Choose an option below:_", $keyboard, "Markdown");
             } else {
                 // Delete generating message if it was sent
                 if (isset($genMessage['result'])) {
