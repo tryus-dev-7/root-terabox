@@ -20,6 +20,8 @@ function saveUserData($userData)
 function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown")
 {
     global $TELEGRAM_BOT_TOKEN;
+    global $ADMIN_CHAT_ID;
+
     $url = "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage";
     $data = [
         'chat_id' => $chatId,
@@ -35,6 +37,15 @@ function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown")
 
     // Decode the JSON response
     $responseData = json_decode($response, true);
+
+    // Check if the response indicates an error
+    if (isset($responseData['ok']) && !$responseData['ok']) {
+        // Log the error message from Telegram
+        error_log("Telegram API Error: " . $responseData['description']);
+
+        // Optional: Send a message back to the admin chat or log the error
+        sendMessage($ADMIN_CHAT_ID, "Error occurred: " . $responseData['description']);
+    }
 
     // Return the full response data
     return $responseData;
@@ -138,7 +149,7 @@ if (isset($update['message'])) {
                 ];
 
 
-                sendMessage($chatId, "*➡️ Title :* \n\n_Choose an option below:_", $keyboard, "Markdown");
+                sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
             } else {
                 // Delete generating message if it was sent
                 if (isset($genMessage['result'])) {
