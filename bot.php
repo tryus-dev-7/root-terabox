@@ -87,7 +87,7 @@ if (isset($update['message'])) {
     $message = $update['message'];
     $chatId = $message['chat']['id'];
     $text = $message['text'];
-    $username = $message['chat']['username'] ?? 'None';
+    $username = $message['from']['username'] ?? 'None';
 
 
     if ($maintenance_mode) {
@@ -109,7 +109,7 @@ if (isset($update['message'])) {
                 $totalUsers = count($userData);
                 sendMessage($ADMIN_CHAT_ID, "➡️ *New User Started The Bot :*\n🆔 User ID : $chatId\n🌐 Total Users : $totalUsers", null, "Markdown");
             }
-            $firstName = $message['chat']['first_name'] ?? 'there';
+            $firstName = $message['from']['first_name'] ?? 'there';
             sendMessage($chatId, "*🙋‍♂ Hello, $firstName!*\n➖➖➖➖➖➖➖➖➖➖➖➖➖\nWelcome Back!\n\n[Join Here](https://t.me/RootNetworkz) | [Support](https://t.me/IronRoot999)\n\nJust send me the link....", null, "Markdown");
         } else {
             // Show typing status
