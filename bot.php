@@ -99,6 +99,14 @@ function extractVideoId($url)
     return null;
 }
 
+function extractVideoId2($url)
+{
+    if (preg_match('/\/s\/1(.+)/', $url, $matches)) {
+        return $matches[1];
+    }
+    return null;
+}
+
 // Show typing action in the chat
 function sendChatAction($chatId, $action = "typing")
 {
@@ -147,6 +155,7 @@ if (isset($update['message'])) {
             // Handle URL and send download links
             $genMessage = sendMessage($chatId, "*⚡ Generating video...*", null, "Markdown");
             $videoId = extractVideoId($text);
+            $watchId = extractVideoId2($text);
 
             $downloadLinks = fetchDownloadLinks($videoId);
 
@@ -155,13 +164,15 @@ if (isset($update['message'])) {
                 $videoLink = $downloadLinks['link'];
                 $shortId = $downloadLinks['id'];
                 $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId&mode=compact";
+                $watchVideoLink2 = "https://www.1024terabox.com/sharing/embed?surl=$watchId&autoplay=true&mute=false";
 
 
                 // Create keyboard for download options
                 $keyboard = [
                     'inline_keyboard' => [
+                        [['text' => '▶️ Player 1.0', 'url' => $watchVideoLink]],
+                        [['text' => '▶️ Player 2.0', 'url' => $watchVideoLink2]],
                         [['text' => '⬇️ Download Video', 'url' => $videoLink]],
-                        [['text' => '▶️ Watch Video', 'url' => $watchVideoLink]]
                     ]
                 ];
 
