@@ -3,6 +3,7 @@
 $TELEGRAM_BOT_TOKEN = '7638807691:AAEZbT6fD_cmUBIYcbLtAOcWJfqkOEpTE4I';
 $API_ENDPOINT = "http://terabox.bijoyknath.site/tera.php";
 $ADMIN_CHAT_ID = '1237570780';
+$CHANNEL_ID = "@RootNetworkz";  // Use the channel username with "@" or the numeric channel ID
 $USER_DATA_FILE = 'user_data.json';
 $maintenance_mode = false; // Set to true to enable maintenance mode, false to disable
 
@@ -25,6 +26,30 @@ function sanitizeForMarkdown($text)
         $text
     );
     return $text; // Return sanitized text
+}
+
+// Function to verify subscription to a channel
+function isUserSubscribed($userId)
+{
+    global $TELEGRAM_BOT_TOKEN, $CHANNEL_ID;
+
+    // Telegram API endpoint for checking channel membership
+    $url = "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getChatMember";
+    $data = [
+        'chat_id' => $CHANNEL_ID,
+        'user_id' => $userId,
+    ];
+
+    // Send the request to the Telegram API
+    $response = file_get_contents($url . "?" . http_build_query($data));
+    $responseArray = json_decode($response, true);
+
+    // Check if the user is subscribed
+    if ($responseArray['ok'] && in_array($responseArray['result']['status'], ['member', 'administrator'])) {
+        return true;
+    }
+
+    return false;
 }
 
 // Send a message to a Telegram chat// Send a message to a Telegram chat
@@ -142,6 +167,10 @@ if (isset($update['message'])) {
 
 
                 sendMessage($chatId, "*➡️ Title :* $title\n\n_Choose an option below:_", $keyboard, "Markdown");
+                // Delete generating message if it was sent
+                if (isset($genMessage['result'])) {
+                    deleteMessage($chatId, $genMessage['result']['message_id']);
+                }
             } else {
                 // Delete generating message if it was sent
                 if (isset($genMessage['result'])) {
