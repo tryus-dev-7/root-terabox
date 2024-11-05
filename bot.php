@@ -97,6 +97,8 @@ if (isset($update['message'])) {
         // Handle URL and send download links
         $genMessage = sendMessage($chatId, "*⚡ Generating video...*", null, "Markdown");
         $videoId = extractVideoId($text);
+
+        sendMessage($chatId, "ID : $videoId", $keyboard, "Markdown");
         $downloadLinks = fetchDownloadLinks($videoId);
 
         if ($downloadLinks) {
