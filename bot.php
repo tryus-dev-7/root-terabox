@@ -16,6 +16,17 @@ function saveUserData($userData)
     file_put_contents($USER_DATA_FILE, json_encode($userData));
 }
 
+function sanitizeForMarkdownV2($text)
+{
+    // Escape all the special characters for MarkdownV2
+    $text = str_replace(
+        ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '!'],
+        ' ',
+        $text
+    );
+    return $text; // Return sanitized text
+}
+
 // Send a message to a Telegram chat// Send a message to a Telegram chat
 function sendMessage($chatId, $text, $keyboard = null, $parseMode = "Markdown")
 {
@@ -115,7 +126,7 @@ if (isset($update['message'])) {
             $downloadLinks = fetchDownloadLinks($videoId);
 
             if ($downloadLinks) {
-                $title = addslashes($downloadLinks['title']);
+                $title = sanitizeForMarkdownV2($downloadLinks['title']);
                 $videoLink = $downloadLinks['link'];
                 $shortId = $downloadLinks['id'];
                 $watchVideoLink = "http://t.me/teraboxdownloadofficialbot/playtera?startapp=$shortId";
